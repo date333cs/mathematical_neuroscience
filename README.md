@@ -1,0 +1,2 @@
+# mathematical_neuroscience
+Mathematical Neuroscience Course
