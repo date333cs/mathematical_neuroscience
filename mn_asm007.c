@@ -1,5 +1,7 @@
 /*
   mn_asm007.c
+
+  $ gcc mn_asm007.c irl_utility.c -lm  
 */
 
 #include <stdio.h>
@@ -93,7 +95,7 @@ void set_initial_state(int **p, int *x, int n, int a){
 }
 
 
-void update_sates(double **w, int *x, int *ux, int n){
+void update_states(double **w, int *x, int *ux, int n){
 
   int i, j;
   double u;
@@ -162,13 +164,13 @@ int main ( int argc , char *argv []){
   set_weights(w, p, n, m);
   // print_weights(w, p, n, m);
 
-  a = 100;
+  a = 200;
   set_initial_state(p, x, n, a); 
   
   for (i=0; i<20; i++){
-    update_sates(w, x, ux, n);
     dc = compute_dc(p, x, n);
     printf("%d \t %.10lf\n",i,dc);
+    update_states(w, x, ux, n);
   }
   
   return 0;
