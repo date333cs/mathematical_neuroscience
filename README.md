@@ -11,7 +11,7 @@ Mathematical Neuroscience Course Materials
 - an example of memory allocation:  [mn_test.c](mn_test.c)
 - templates: [mn_asm000.c](mn_asm000.c), [mn_asm001.c](mn_asm002.c), [mn_asm002.c](mn_asm002.c)
 - for gnuplot [gp001](gp001)
-- data structure (i,j=0,...,n-1, a=0,...,m-1
+- data structure (n neurons, m memory patterns, i,j=0,...,n-1, a=0,...,m-1)
  - int x[i] :  current state
  - int ux[i] : next state 
  - double w[i][j] : connection weights
