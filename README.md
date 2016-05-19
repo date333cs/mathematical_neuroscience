@@ -17,8 +17,15 @@ Mathematical Neuroscience Course Materials
  - double w[i][j] : connection weights
  - int p[a][i] : memory items
 
+### Self-organizaing MAP
+
+- templates: [mn_som000.c](mn_som000.c), [mn_som001.c](mn_som002.c),
+
+ - for MNIST templates(http://www.cs.miyazaki-u.ac.jp/~date/lectures/2015neural/mnist/index.html)
+
+
 ### Boltzmann Machine
 +
 
-### Self-organizaing MAP
-+
+
+
