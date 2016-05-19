@@ -6,6 +6,7 @@
 #include <stdlib.h> /* for srand48(), drand48() */
 #include <math.h>   /* for sqrt(), log(), M_PI */
 #include "irl_utility.h"
+#include "mn_som.h"
 
 int main ( int argc , char * argv []){
 
@@ -19,11 +20,7 @@ int main ( int argc , char * argv []){
    5. repeat from 2.
 
 
-   Data Structure
-   
-   input  x[0..n-1]
-   reference vector  m[i][0...n-1]
-
+   For data structure, see mn_som.h
 
 */
     return 0;
