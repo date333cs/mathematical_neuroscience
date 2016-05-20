@@ -19,10 +19,14 @@ Mathematical Neuroscience Course Materials
 
 ### Self-organizaing MAP
 
+
+<img src="https://github.com/date333cs/mathematical_neuroscience/blob/master/result_som_102.png" height="220px" align="left">
+
 - templates: [mn_som000.c](mn_som000.c), [mn_som001.c](mn_som001.c),
 - code [mn_som101.c](mn_som101.c) (written in the class room at 2016.5.20)
+- code [mn_som102.c](mn_som102.c), [gp_som102](gp_som102)
 
- - for MNIST [templates](http://www.cs.miyazaki-u.ac.jp/~date/lectures/2015neural/mnist/index.html)
+- for MNIST [templates](http://www.cs.miyazaki-u.ac.jp/~date/lectures/2015neural/mnist/index.html)
 
 
 ### Boltzmann Machine

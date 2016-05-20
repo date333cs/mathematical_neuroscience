@@ -1,0 +1,19 @@
+set terminal postscript "Helvetica" 24 color eps enhanced
+#set terminal png
+# set terminal x11
+set xlabel ""
+set ylabel ""
+set nokey  # これを含めると，凡例が表示されない．
+set xrange[0:1]
+set yrange[0:1]
+set size square
+set nokey
+set out 'result_som_102.eps'
+#set out 'result_som_102.png'
+
+# 1 red, 2 green, 3 blue, 4 pink, 5 light blue, 6 yellow, 7 black, 
+set style line 1 lc 1 lt 1 lw 3 pt 1 ps 1.0    # 線や点の太さの定義
+plot "result_som102_t0.dat" using 1:2 with linespoints linestyle 9,\
+"result_som102_t2000.dat" using 1:2 with linespoints linestyle 4,\
+"result_som102_t4000.dat" using 1:2 with linespoints linestyle 3 ,\
+"result_som102_t10000.dat" using 1:2 with linespoints linestyle 1
