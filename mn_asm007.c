@@ -14,8 +14,8 @@ void generate_memories(int **p, int n, int m){
 
   int i, j;
 
-  for (j=0; j<m; j++){
-    for (i=0; i<n; i++){
+  for(j=0; j<m; j++){          
+    for (i=0; i<n; i++){        
       if ( drand48() < 0.5 ){
 	p[j][i] = 1;
       }
