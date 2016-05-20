@@ -22,6 +22,8 @@ Mathematical Neuroscience Course Materials
 
 <img src="https://github.com/date333cs/mathematical_neuroscience/blob/master/result_som_102.png" height="220px" align="left">
 
+- Input: 2D uniform distribution, Neural Field (Output): 1D (n=100)
+
 - templates: [mn_som000.c](mn_som000.c), [mn_som001.c](mn_som001.c),
 - code [mn_som101.c](mn_som101.c) (written in the class room at 2016.5.20)
 - code [mn_som102.c](mn_som102.c), [gp_som102](gp_som102)
