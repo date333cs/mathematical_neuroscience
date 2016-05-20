@@ -20,6 +20,7 @@ Mathematical Neuroscience Course Materials
 ### Self-organizaing MAP
 
 - templates: [mn_som000.c](mn_som000.c), [mn_som001.c](mn_som001.c),
+- code [mn_som101.c](mn_som101.c) (written in the class room at 2016.5.20)
 
  - for MNIST [templates](http://www.cs.miyazaki-u.ac.jp/~date/lectures/2015neural/mnist/index.html)
 
