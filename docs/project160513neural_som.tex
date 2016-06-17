@@ -1,0 +1,557 @@
+%#! platex %f && dvipdfmxm -d 5 project160513neural_som
+%%%
+\documentclass[a4paper,11pt]{jarticle} 
+\usepackage{fancybox}
+\usepackage{fancybox,ascmac}
+\usepackage{array}
+\usepackage[dvips,usenames]{color}  % for revise color 
+%\usepackage{fancyheadings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{psfrag}
+\usepackage{ascmac} % itembox
+\usepackage{amsmath} % bmatrix
+\usepackage{amssymb} % leqq
+\usepackage{fancybox}
+\usepackage{slashbox}
+% \pagestyle{empty}
+\topmargin = -5mm
+\oddsidemargin = 4mm
+\textwidth = 150mm
+\textheight = 230mm
+\pagestyle{fancyplain}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+%\setlength{\headrulewidth}{0pt}
+\bmdefine{\bmu}{\mu}
+\bmdefine{\bm}{m}
+\bmdefine{\bx}{x}
+\bmdefine{\br}{r}
+\bmdefine{\bw}{w}
+\bmdefine{\by}{y}
+\bmdefine{\bz}{z}
+\bmdefine{\ba}{a}
+\bmdefine{\btheta}{\theta}
+\begin{document}
+\lhead{}
+\rhead{\small 数理脳科学\\2016年5月13日}
+\lfoot{}
+% \cfoot{}
+
+\begin{center}
+{\large\bf 課題 2: ~自己組織化モデル}\\
+提出締切 5月27日（金）
+% ．20日の講義までに一度はシミュレーションをしておくこと）
+\end{center}
+\vskip 3mm
+
+
+
+\begin{enumerate}
+
+\item 信号 $\bx =(x_1, x_2)$の
+各要素 $ x_1,x_2 $ は区間 [0,1) の一様分布にしたがうとする．
+このような2次元の信号 $\bx$ を100個生成し，平面（横軸$x_1$，縦軸$x_2$）上にプロットせよ．
+
+
+\item 信号 $\bx =(x_1, x_2)$の 各要素 $ x_1,x_2 $ が
+それぞれ独立に平均$\mu=1$,分散$\sigma^2 =1$ の正規分布にしたがうとする．
+%（共分散は0とする）
+%ここで，$\mu =1, \sigma = 1.0$，
+%$\mu$は区間 [-5,5) の一様分布にしたがう乱数とする．
+このような信号 $\bx $ を100個生成し，平面上にプロットせよ．
+
+
+%\item 前問において，確率的に中心位置$\bmu$を得ることを3回繰り返し，
+%得られた$\bmu$を
+%% 中心となる座標を3つランダムに決め，
+%%それを 
+%$\bmu^1, \bmu^2, \bmu^3$ とする．
+%$\sigma$の値を $ 0.3. 0,8, 2.0$ とした3種類のデータ群を
+%それぞれ100個生成し，
+%平面上に重ねてプロットせよ（○，×，＋など異なる記号を使い表現すること）．
+
+\item {\gt 入力信号空間，モデル神経場ともに1次元の場合}
+\begin{figure}[hbt]
+\hspace{10mm}A\hspace{70mm}B
+\begin{center}
+\includegraphics[width=.4\linewidth]{som1d002.eps}
+%$\vspace*{-30mm}$\Longrightarrow$
+%\vspace*{20mm}
+$\Longrightarrow$
+\includegraphics[width=.4\linewidth]{som1d001.eps}
+\end{center}
+\caption{1次元の信号空間に1次元SOMを適用．左：学習前．右：学習後}
+\end{figure}
+
+素子数$ n=10$ の1次元神経場モデル（自己組織化マップ，SOM）を考えよう．
+各素子は1次元の信号 $x$ を受け取り，
+$i$番目の素子は入力空間に対して$m_i$の重みをもつ
+（$m_i$は，一般的には，参照ベクトルとよばれている）．
+ここで $ m_i, i=1,\cdots,n$
+% の初期値は，
+の値は，
+区間 [0,1) の一様分布にしたがう乱数としておく（図A）．
+SOMは，
+入力 $x$ に対し，以下のルールにしたがい，
+一つの素子$c$だけが興奮する
+（これを勝者とよぶ）．
+\begin{eqnarray}
+c & = & {\displaystyle \mathop{\rm arg}_{i}} \mbox{min}
+| m_i - x |
+\label{eqn:eq1}
+\end{eqnarray}
+11通りの入力 $x = 0.0, 0.10, 0.20, \cdots, 1.0$ に対する勝者
+（winner, 素子の番号$c$）を求めよ（表1）．
+
+\begin{table}[htb]
+\begin{center}
+\caption{入力$x$に対する勝者素子の番号}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+$x$ & 0.0 & 0.10 & 0.20 & 0.30 & 0.40 
+& 0.50 & 0.60 & 0.70 & 0.80 & 0.90 & 1.00  \\ \hline
+$c$ & & & & & & & & & & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+%\begin{center}
+%\begin{minipage}[]{0.3\linewidth}
+%\begin{tabular}{|c|c|} \hline
+%入力 $ x$ & 勝者素子 $c$ \\ \hline
+%0.00  &  \\ \hline
+%0.05  &  \\ \hline
+%0.10  &  \\ \hline
+%0.15  &  \\ \hline
+%0.20  &  \\ \hline
+%0.25  &  \\ \hline
+%0.30  &  \\ \hline
+%\end{tabular}
+%\end{minipage}
+%\begin{minipage}[]{0.30\linewidth}
+%\begin{tabular}{|c|c|} \hline
+%入力 $ x$ & 勝者素子 $c$ \\ \hline
+%0.35  &  \\ \hline
+%0.40  &  \\ \hline
+%0.45  &  \\ \hline
+%0.50  &  \\ \hline
+%0.55  &  \\ \hline
+%0.60  &  \\ \hline
+%0.65  &  \\ \hline
+%\end{tabular}
+%\end{minipage}
+%\begin{minipage}[]{0.30\linewidth}
+%\begin{tabular}{|c|c|} \hline
+%入力 $ x$ & 勝者素子 $c$ \\ \hline
+%0.70  &  \\ \hline
+%0.75  &  \\ \hline
+%0.80  &  \\ \hline
+%0.85  &  \\ \hline
+%0.90  &  \\ \hline
+%0.95  &  \\ \hline
+%1.00  &  \\ \hline
+%\end{tabular}
+%\end{minipage}
+%\end{center}
+
+\item 
+区間 [0,1) の一様分布にしたがうランダムな
+入力信号 $x$を生成し，これに対する勝者を計算せよ．
+これを1000回くりかえし，各素子が勝者になった回数を求めよ．
+前問3 で作った回路（前問と同じ$m_i, i=1,\cdots,n$）を用いて実験をおこなうこと
+（表2）．
+
+\begin{table}[htb]
+\begin{center}
+\caption{各素子が勝者となった頻度}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|} \hline
+素子の番号 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+勝者になった回数  & & & & & & & & & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\item 入力信号 $x$ の構造に応じて学習が進む．その様子をみてみよう．
+
+\begin{enumerate}
+
+\item $ m_i, i=1,2,\cdots$を
+区間 [0,1) の一様分布にしたがう乱数に設定する
+（前問で使った値と同じ）．
+
+
+\item 区間 [0,1) の一様分布にしたがう信号 $x$ を一つ生成し，
+モデルに入力信号$x$を与える．
+
+% 入力信号 $ x $ は，区間 [0,1) の一様分布にしたがうものとする．
+% モデルに入力信号$x$を1回与えるごとに，
+
+\item 以下の式にしたがい
+係数  $m_i,i=1,2,\cdots$ の値を更新する（これを学習という）．
+\begin{eqnarray}
+m_i & := &  m_i + \alpha  \exp \Bigl \{ -\frac{ | c - i |^2}{2\sigma^2}
+ \Bigr \} ( x - m_i) 
+\label{eqn:eq2}
+\end{eqnarray}
+
+ここで
+% $h_{ci}$ は 素子の配列状で$i$番目の素子と勝者である$c$番目の素子との
+%間の距離に依存して決まる． 
+$\alpha > 0$ は学習の強さを表す係数，
+%（結合係数のダイナミクスに対応）．
+$\sigma >0$ は，勝者素子が，どのくらい遠く離れた
+素子まで影響を与えるかを定める定数である
+（$\exp\{\}$の部分は近傍関数とよばれている）．
+% $\sigma >0$ はどのくらい近傍の素子に影響を与えるかを定める定数である．
+パラメータの値は，
+たとえば \underline{$\alpha = 0.2, \sigma = 0.8$}にしておく．
+
+\item (b) に戻り，2000回，繰り返す．
+ここで100回ごとに，
+前問3,4で使った統計量を計算せよ
+（統計量を求めるときは学習しない）．
+表3では，信号$x$を$0.1$ 間隔で入力し，11通りの入力に対する
+勝者素子を調べているが，
+$0.05$ 間隔，21通りに対する勝者素子を調べる方が分かりやすい
+（はず）．
+\end{enumerate}
+\rhead{}
+
+\begin{table}[htb]
+\begin{center}
+\caption{入力$x$に対する勝者素子の番号}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+\backslashbox{$t$}{入力$x$}  & 0.0 & 0.10 & 0.20 & 0.30 & 0.40 
+& 0.50 & 0.60 & 0.70 & 0.80 & 0.90 & 1.00  \\ \hline
+0  & & & & & & & & & & & \\ \hline
+100  & & & & & & & & & & & \\ \hline
+\vdots  & & & & & & & & & & & \\ \hline
+2000  & & & & & & & & & & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+
+\begin{table}[htb]
+\begin{center}
+\caption{各学習段階において，1000個の入力に対し，各素子が勝者となった
+回数}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|} \hline
+\backslashbox{$t$}{素子の番号} & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+0 & & & & & & & & & & \\ \hline
+100 & & & & & & & & & & \\ \hline
+\vdots & & & & & & & & & & \\ \hline
+2000 & & & & & & & & & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\item 図Bは学習後の様子を描いた例である．
+初期状態から，学習が進む様子を，この図A,Bを参考に
+作成せよ（本質的な部分が表現できればよい）．
+
+
+\item 入力信号$x$が，
+平均$\mu=0.5$，分散 $\sigma^2=1$ の正規分布にしたがうとする．
+5.(b) だけを変えて実験し，その結果を
+$x$が一様分布に従う場合と比較し，考察せよ．
+
+
+
+
+
+
+
+
+\item  素子数 $n$, 係数 $\alpha, \sigma $ の値を適当な値に変えて実験してみよ．
+
+（コメント） 係数 $ \alpha$ ，$\sigma$は，
+ともに，$ \alpha = 0.3 (1.0- \frac{t}{T}) + 0.01 $，
+$ \sigma = 2.0 (1.0- \frac{t}{T}) + 0.1 $，
+のように，時間と共に小さくすれば，きれいな絵が描けるかもしれない．
+$T$は $T=2000$など，あらかじめ設定しておく最終的な学習回数．
+$T$は，もちろん，大きい方が学習が進む．
+
+
+% \newpage
+
+\item {\gt 入力信号空間が2次元，モデル神経場が1次元の場合：
+2次元から1次元への写像}
+\begin{figure}[hbt]
+\hspace{10mm}C\hspace{70mm}D
+\begin{center}
+\includegraphics[width=.4\linewidth]{som1d006.eps}
+\hspace{5mm}
+\includegraphics[width=.4\linewidth]{som1d005.eps}
+\end{center}
+\caption{2次元の信号空間に1次元SOMを適用．左：学習前．右：学習後}
+\end{figure}
+
+素子数$ n=10$ の1次元SOMの
+各素子が2次元の信号 $\bx = (x_1,x_2)^{\rm T}$ を受け取る場合を考えよう．
+$i$番目の素子は入力空間に対して
+$\bm_i = (m_{i1}, m_{i2})^{\rm T}$の重みをもつとする．
+ここで $ m_{i1}, m_{i2}, i=1,\cdots,n$の初期値は，
+区間 [0,1) の一様分布にしたがう乱数とする（図C）．
+入力信号$\bx$が$[0,1)\times[0,1)$平面上に一様に分布する場合を考えよう．
+前問の場合と同様に，SOMは，
+入力 $\bx$ に対し，一つの素子$c$だけが興奮する．
+\begin{eqnarray}
+c & = & {\displaystyle \mathop{\rm arg}_{i}} \mbox{min}
+|| \bm_i - \bx ||
+\label{eqn:eq3}
+\end{eqnarray}
+入力信号$\bx$を1回与えるごとに，
+以下の式にしたがい
+係数  $m_i,i=1,\cdots,n$ の値を更新せよ．
+\begin{eqnarray}
+m_i & := &  m_i + \alpha  \exp \Bigl \{ -\frac{ | c - i |^2}{2\sigma^2}
+ \Bigr \} ( \bx - \bm_i) 
+\label{eqn:eq2}
+\end{eqnarray}
+図Dは学習後の様子を描いた例である．
+初期状態から学習が進む様子を，この図C,Dを参考に
+作成せよ
+（入力信号$\bx$の平面に，各素子の$\bm_i$をプロットし，
+素子配列上で近傍関係にある素子どうしの$\bm_i$を線で結べばよい）．
+パラメータの値は，たとえば $\alpha = 0.2, \sigma = 0.8$にしておく．
+1000回の学習をおこなえ．
+素子数を$n=20,50$など何通りかの値に変え，
+適宜，各パラメータの値，学習回数を調整して計算機実験をおこない，その結果を考察せよ．
+
+
+%\vskip 10mm
+%\noindent
+%{\gt これ以下の課題は，オプションではあるが，
+%面白いので，ぜひ実験してほしい}
+
+
+
+% \item 前問で，入力信号$\bx$の確率分布を
+
+\item {\gt 入力信号空間，モデル神経場がともに2次元の場合}
+
+素子数 $ n=10 \times 10 $ の2次元SOMを考えよう．
+各素子は2次元の信号 $\bx=(x_1,x_2)^{\rm T}$ を受け取り，
+$i$番目の素子は入力空間に対して$\bm_i = (m_{i1}, m_{i2})^{\rm T}$の重みをもつとする．
+ここで $ m_{i1}, m_{i2}, i=1,\cdots,n$の初期値は，
+区間 [0,1) の一様分布にしたがう乱数とする．
+入力信号$\bx$が$[0,1)\times[0,1)$平面上に一様に分布する場合を考えよう．
+SOMは，
+入力 $\bx$ に対し，
+式(\ref{eqn:eq3})
+%のルール
+にしたがい，
+一つの素子$c$だけが興奮する．
+%\begin{eqnarray}
+%c & = & {\displaystyle \mathop{\rm arg}_{i}} \mbox{min}
+%|| \bm_i - \bx ||
+%\end{eqnarray}
+%% 21通りの入力 $x = 0.0, 0.05,0.10, 0.15, 0.20, \cdots, 1.0$ に対する勝者（素子の番号$c$）を求めよ．
+%前問の場合と同様に，SOMは，
+%入力 $\bx$ に対し，一つの素子$c$だけが興奮する．
+モデルに入力信号$\bx$を1回与えるごとに，
+以下の式にしたがい
+係数  $\bm_i,i=1,\cdots,n$ の値を更新せよ．
+\begin{eqnarray}
+\bm_i & := &  \bm_i + \alpha  \exp \Bigl \{ -\frac{ || \br_c - \br_i ||^2}{2\sigma^2}
+ \Bigr \} ( \bx - \bm_i) 
+\end{eqnarray}
+ここで
+$\br_i$は，$i$番目の素子の配列上（神経場）での位置である．
+%たとえば $\alpha = 0.01, \sigma = 0.8$にしておく．
+%
+配列上の位置とは，
+$ n= 10 \times 10 $の場合，$ i=1,\cdots,100$であり，
+$ \br_1 = (0,0)$，
+$ \br_2 = (1,0), 
+\br_3 = (2,0), \cdots,
+\br_{11} = (0,1), \br_{12} = (1,1), \cdots,
+\cdots, \br_{100} = (9,9)$
+などと考えればよい．
+$ \br_{i} = (x,y)$ と書くと，
+$ x,y = 0,\cdots, 9 $　として $ i = x +1 + 10y $
+と表現できる．
+%
+パラメータの値は，たとえば $\alpha = 0.2, \sigma = 0.8$にしておく．
+20,000回の学習をおこなえ．
+%ここで1000回の学習ごとに，前問4,5で調べた量を求めなさい．
+%
+各$\bm_i$を平面（入力信号空間）に点でプロットし，
+2次元神経場上でとなりあう素子の$\bm_i$を
+線で結べば，図3のような図が描け，
+学習が進む様子がよくわかる．
+
+
+\begin{figure*}[hbt]
+\begin{center}
+\includegraphics[width=0.48\linewidth]{filename0.eps}
+\includegraphics[width=0.48\linewidth]{filename1000.eps}
+\includegraphics[width=0.48\linewidth]{filename3000.eps}
+\includegraphics[width=0.48\linewidth]{filename10000.eps}
+\caption{自己組織化の過程}
+\end{center}
+\end{figure*}
+
+
+
+\item 前問において，入力信号 $\bx$ の確率分布を適当に設計し，
+生成したデータをモデルに与え，
+どう学習が進むか，いろいろ試して考察せよ．
+具体的な分布としては，
+2次元正規分布，円周の周辺だけにデータが
+存在する分布，三角形の領域にだけ
+データが存在する分布など，
+各自自由に考えればよい．
+素子数を増やせば結果は変わる．
+講義中に例は示すが，
+面白い振る舞いをする例を独自に探せ．
+入力信号の次元は3次元以上にしてもよい．
+
+%\item 図の描き方の指南．
+%
+% \item $\bx =(x_1,x_2,x_3)$とする．
+
+
+\vskip 10mm
+
+
+% \item []
+
+
+
+
+
+\item[]
+{\gt 注意：} ~
+課題が手に負えない場合，はやめに
+A-334 か A-423まで，相談にくること．
+
+\vskip 5mm
+
+
+\item[]
+{\gt 補足：} ~
+「脳はどういう風に動いているのか」，
+このモデルを通して感じ取れる可能性のある性質をいくつか挙げておく．
+\begin{enumerate}
+\item トポグラフィックマップの形成： 
+でたらめな結合が，
+整然とした結合に変化していく
+（となりの細胞の行き先は，自分の行き先のとなりになること）
+
+% → 学習係数 $\alpha$， 近傍関数のパラメータ $\sigma$，参照ベクトル $\bm_i$の初期値が重要．
+
+\item 入力空間において，入力頻度の高い領域ほど多くの細胞が割り当てられる．
+→ 入力信号 $\bx$ の確率分布を一様分布から偏ったものにしてみる．
+
+\item 一部の細胞（素子，ニューロン）が壊れても，他の細胞が代わりに働くようになる．
+→ 学習の途中で一部の細胞を取り除いてみる．
+
+\item 高次元の情報を低次元でうまく表現できる．
+
+→ 問題 9. がこれに対応している．
+
+\end{enumerate}
+
+
+
+
+
+
+\vskip 10mm
+
+課題に曖昧な点があった場合は適当に解釈してよい．
+その場合は必ず，具体的にどの部分をどう解釈したかをレポートに記述すること．
+レポートの最後には，感想，質問などを記述してほしい．
+理解しにくい点があった場合は，
+このプリント中の，どこの部分が分かりにくかったか，
+具体的に，指摘してもらえれば大変助かる
+（来年度向けに改善するため）．
+
+\vskip 5mm
+本講義においては，
+単位の認定にあたって，
+問題設定，
+計算機実験の手順，
+計算機実験の結果を，
+自分の書いたレポートを片手に，
+ほぼ何もみないで説明できるレベルに到達できていることを要求します．
+
+
+
+
+
+\end{enumerate}
+
+
+\newpage
+
+\begin{center}
+{\large\bf ノート： {\tt gnuplot} の使い方}\\
+\end{center}
+\vskip 3mm
+
+\noindent
+\underline{複数の折れ線の描き方}
+\vskip5mm
+
+
+
+例えばデータファイル {\tt test.dat} を次のような内容で用意しておく．
+{\small 
+\begin{verbatim}
+1.0 3.0
+2.0 4.0
+3.0 2.0
+
+1.0 -1.0
+3.0 0.0
+5.0 0.0
+\end{verbatim}
+}
+（2次元$(x,y)$ 座標データ，合計6点が記述されている． 間に空行があるのがポイント）
+\begin{verbatim}
+gnuplot> plot [0:7][-2:5]"test.dat" with lines, "test.dat" with points
+\end{verbatim}
+とすると
+\begin{center}
+\includegraphics[width=.48\linewidth]{gp_example_brain001.eps}
+\includegraphics[width=.48\linewidth]{gp_example_brain002.eps}
+\end{center}
+上図（左）が得られる．
+レポート等には，上図（右）のような美しい図を貼り付けたい．
+このときは，以下のようなファイルを作り（{\tt gp-script}としておく），
+%
+{\small 
+\begin{verbatim}
+set terminal postscript "Helvetica" 20 color eps enhanced
+set xlabel "Time  ({/Italic t})"
+set ylabel "Distance"
+set nokey  # これを含めると，凡例が表示されない．
+set style line 1 lt 1 lw 5 pt 3 ps 1.0    # 線や点の太さの定義
+set style line 2 lt 1 lw 3 pt 7 ps 2.0    # 自由に変えて試してみる
+set label "{/Italic t}=1000"  at first 5.5, first  4.0
+plot [0:7][-2:5]"test.dat" with lines linestyle 1,\
+"test.dat" with points linestyle 2
+#
+# 意味： lt line_type,  lc linecolor,  lw linewidth
+#        pt pointtype,  ps pointsize
+\end{verbatim}
+}
+\noindent
+これを
+\begin{verbatim}
+$ gnuplot gp-script > test.eps
+\end{verbatim}
+とすれば，\LaTeX で利用しやすい{\tt eps} ファイルが作成できる．
+
+\rhead{\small 2011年5月20日\\
+${\cal A.D.}$}
+\end{document}
+

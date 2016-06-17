@@ -1,0 +1,494 @@
+%#! platex %f && dvipdfmxm -d 5 project160415associative
+%%
+%pdftk ics050530.pdf cat 1 output aaa3.pdf
+%       これで1頁目だけ get
+%
+\documentclass[a4paper,11pt]{jarticle} 
+\usepackage{fancybox}
+\usepackage{fancybox,ascmac}
+\usepackage{array}
+\usepackage[dvips,usenames]{color}  % for revise color 
+%\usepackage{fancyheadings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{slashbox}
+%\usepackage{psfrag}
+\usepackage{ascmac} % itembox
+\usepackage{amsmath} % bmatrix
+\usepackage{amssymb} % leqq
+\usepackage{fancybox}
+\usepackage{ulem}
+\def\maru#1{\textcircled{\scriptsize#1}}
+\pagestyle{empty}
+\topmargin = -5mm
+\oddsidemargin = 4mm
+\textwidth = 150mm
+\textheight = 230mm
+\pagestyle{fancyplain}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+%\setlength{\headrulewidth}{0pt}
+\bmdefine{\bmu}{\mu}
+\bmdefine{\bm}{m}
+\bmdefine{\bx}{x}
+\bmdefine{\br}{r}
+\bmdefine{\bw}{w}
+\bmdefine{\by}{y}
+\bmdefine{\bz}{z}
+\bmdefine{\ba}{a}
+\bmdefine{\btheta}{\theta}
+\everymath{\displaystyle}
+\begin{document}
+%\vspace*{0mm}
+\setlength{\baselineskip}{7mm}
+\rhead{\small 15 Apr 2016}
+\lfoot{}
+% \cfoot{}
+
+\begin{center}
+{\large\bf 
+YRM71 -- Mathematical Neuroscience\\ Project 1: Associative memory}
+%中間発表（30秒/人）：4月22日（金），最終提出締切： 5月6日（金）
+% ．15日の講義までに一度はシミュレーションをしておくこと）
+\end{center}
+
+A short oral presentation is required
+in addition to turn in a short writeup
+that describes the problem you investigated, 
+why it is interesting, and results. 
+
+
+
+%Sparse codes and associative memory. The advantages of storing and
+%recalling patterns using an associative memory as opposed to
+%conventional template matching are 1) parallel search, 2) distributed
+%storage, and 3) denoising (recall of an uncorrupted pattern from partial
+%or degraded input). 
+
+
+\subsection*{Key words}
+
+parallel search, distributed storage, content-addressable memory (denoising,  pattern completion)
+
+
+\subsection*{Assignment}
+
+\begin{enumerate}
+\item  
+Refer to Amari \& Maginu (1988).
+%Carry out 
+Perform computer simulation of associative memory
+in a neural network of $n=1000$ neurons,
+$m=80$ and $200$ memory items.
+Reproduce the Figure 1 and Figure 2 shown in Amari \& Maginu (1988).
+
+
+If you want to perform computer simulation of a huge number of neurons
+(e.g. $n=10000$),
+you don't need to use two dimensional array {\tt w[i][j]} 
+since
+\begin{eqnarray}
+x_i (t+1) & = & \mathrm{sgn} \left ( \sum_{j=1}^n w_{ij} x_j (t) \right) \nonumber \\
+& = &  \mathrm{sgn} \left ( \sum_{j=1}^n  \frac{1}{n} \sum_{\alpha=1}^m x_i^{\alpha} x_j^{\alpha}
+  x_j (t) \right ) \nonumber \\
+& = &  \mathrm{sgn} \left ( \sum_{j=1}^n  \sum_{\alpha=1}^m x_i^{\alpha} x_j^{\alpha}
+  x_j (t) \right ) . \nonumber
+\label{eqn:neuron_dynamics}
+\end{eqnarray}
+
+
+
+\item $ \cdots$
+\end{enumerate}
+
+
+\newpage
+
+
+%\vspace*{0mm}
+\setlength{\baselineskip}{7mm}
+\rhead{\small 数理脳科学\\2016年4月15日
+}
+\lfoot{}
+% \cfoot{}
+
+\begin{center}
+{\large\bf 課題 1: ~連想記憶モデル}\\
+中間発表（30秒/人）：4月22日（金），最終提出締切： 5月6日（金）
+% ．15日の講義までに一度はシミュレーションをしておくこと）
+\end{center}
+\vskip 3mm
+
+{\gt 目的：} 脳は多数の神経細胞の相互作用による\uwave{並列分散型}の情報処理を基本としており，
+\uwave{多重分散型}の記憶システムをもつ．
+連想記憶の数理モデルのコンピュータシミュレーションを通して，
+これらについて直観的な理解を得る．
+% ことが，この課題の目的である．
+%この気分を感じ取ってみよう．
+\vskip 2mm
+
+\noindent
+【問題設定】~
+$n$個の細胞が互いに結合している回路を考える．
+% $この回路における連想記憶システムを考える．
+$i$番目の素子（細胞 $i=1,2,\cdots,n$）の状態を $ x_i \in \{-1,1 \}$，
+$j$番目の素子から$i$番目の素子への結合を $w_{ij}$ とし，
+結合は対称であり（ $ w_{ij} = w_{ji}$ ），
+自己結合はないとする（ $ w_{ii}=0$）．
+すべての素子の状態を $\bx =(x_1, x_2, \cdots, x_n)$ と書き，
+これを回路の状態とよぶ．
+各素子は，以下の式にしたがい，同期して自分の状態を変えていく．
+\begin{eqnarray}
+x_i (t+1) & = & \mathrm{sgn} \left ( \sum_{j=1}^n w_{ij} x_j (t) \right )
+\label{eqn:neuron_dynamics}
+\end{eqnarray}
+%
+%
+ここで，$x_{i}(t)$は時間$t$において$i$番目の素子がとる値，
+$\mathrm{sgn}$ は
+\begin{eqnarray}
+\mathrm{sgn} (u)
+& = & \left\{ \begin{array}{ll}
+1, &  u > 0  \\
+-1, &   u \leqq  0 
+\end{array}
+\right. 
+\end{eqnarray}
+と，正負により値が決まる関数とする．
+時間$t$における回路の状態を $ \bx(t)$と書く．
+$t=0$で
+回路に初期状態$\bx(0)$を与えると，
+回路の状態は$\bx(0) \rightarrow \bx(1) 
+\rightarrow \bx(2) \rightarrow
+\bx(3) \rightarrow \cdots \rightarrow \bx(t) \rightarrow \cdots$ と
+時々刻々遷移していく．
+%
+連想記憶システムの目的は，
+与えられた入力 $\bx(0)$から，
+あらかじめ記憶させておいた
+$m$個のパターン
+\{ $\bx^1, \bx^2,\cdots,\bx^m$ \}
+のうちの一つ， $\bx^c$を想い起こすことである．
+ここで
+\begin{eqnarray}
+c & = & {\displaystyle \mathop{\rm arg}_{\alpha}} \mbox{min}
+|| \bx^\alpha - \bx(0) ||
+\label{eqn:argmin}
+\end{eqnarray}
+である．
+
+ふつうのコンピュータでこの問題を解こうとすると，
+$\bx(0)$とそれぞれの記憶パターン$\bx^\alpha, \alpha=1,\cdots,m$との
+間の距離（または類似度）を求め，
+距離が最小となる $\alpha$ を求める必要がある．
+これには距離の計算が$m$回必要になる．
+脳はこのような探索方法を採用しておらず，
+%そういう求め方はしない．
+% 単純な動作をする
+個々の素子が同時並列に動作することで，
+目的とする$\bx^c$そのものをまっしぐらに求めているようにみえる．
+こんな記憶の検索を雰囲気を味わえる数理モデルがある．
+% 実際に作ってみよう．
+
+以下，まず問題設定を確認するため，手計算の問題をこなした後，
+連想記憶モデルをコンピュータ上で実現してみよう．
+
+\newpage
+
+\noindent
+\underline{{\gt 基本課題}（手計算で手順を確認すればよい．
+1.$\sim$3.についてはレポートを提出する必要はない）}
+%
+\begin{enumerate}
+\item  
+$5$個の細胞が互いに結合している回路（素子数 $ n=5 $ の相互結合型の回路）を考える．
+今，すべての結合係数 $w_{ij}, i,j=1 \cdots, n$ の値は$0$であるとする．
+次の3つのパターン $\bx^1,\bx^2,\bx^3$を Hebb学習（相関学習）
+\begin{eqnarray}
+w_{ij}  & := & w_{ij} + x_i x_j
+\end{eqnarray}
+により記憶させたとする．
+各結合係数 $ w_{ij} $ の値を求め，表1（右端の列を除く）を埋めなさい．
+\begin{eqnarray}
+\bx^1 & = & (+1, +1, +1, +1, +1)  = (x_1^1, x_2^1, x_3^1, x_4^1, x_5^1)  \\
+\bx^2 & = & (-1, -1, -1, +1, +1)  \\
+\bx^3 & = & (-1, -1, +1, +1, +1)  
+\end{eqnarray}
+
+%\setlength{\arrayrulewidth}{1.2pt}      %%%   全体の罫線の幅を 3pt に指定
+\renewcommand{\arraystretch}{1.8}       %%%   表組みの行間を 1.6 倍に指定
+
+\begin{table}[htb]
+\begin{center}
+\caption{結合係数 $w_{ij}$ }
+\begin{tabular}{|c|c|c|c|c|c||c|} \hline
+\backslashbox{$i$}{$j$}   &  1  & 2   & 3 & 4  & 5 & $\sum_{j=1}^n
+ w_{ij} x_j^3 $ \\ \hline \hline
+1 & \hspace*{2mm} 0 \hspace*{2mm}  & \hspace*{10mm}& \hspace*{10mm} & 
+\hspace*{10mm}& \hspace*{10mm} & \hspace*{10mm} \\ \hline
+2 &     & 0 & & & & \\ \hline
+3 &     & & 0  & & & \\ \hline
+4 &     & & &  0& &\\ \hline
+5 &     & & & &  0 & \\ \hline \hline
+$x_j^3$ & -1 & -1 &  +1 &  +1 &  +1 & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+%
+
+\item 
+状態更新をしても状態が変化しない
+%周期1の
+状態のことを平衡状態とよぶ．
+1.で作成した回路において，
+状態 $\bx^3 = (-1, -1, +1, +1, +1)$ が，
+回路の平衡状態になっているかどうか調べよ．
+表1右端の空覧を利用し，
+すべての$i$について（$i=1,\cdots,5$），
+\begin{eqnarray}
+x_i^3 & = & \mathrm{sgn} \left ( \sum_{j=1}^n w_{ij} x_j^3  \right )
+\label{eqn:fixed_points}
+\end{eqnarray}
+が成り立っていれば$\bx^3$は平衡状態である．
+
+
+
+\rhead{}
+
+\item 素子数$n=5$の回路には，とりうる可能性のある状態は全部で$2^5 = 32$個ある．
+状態遷移は
+式(\ref{eqn:neuron_dynamics})にしたがう確定的なダイナミクスにもとづいておこなわれるため，
+回路に初期状態$\bx(0)$を与え，
+$\bx(0) \rightarrow \bx(1) 
+\rightarrow \bx(2) \rightarrow \cdots$ と
+状態を更新する場合，
+$t=32$までには，
+2回以上度出現する状態が少なくとも1つは存在する．
+%
+%
+%かならず$\bx(0)$と同じ状態に戻ってきて，
+%周期的な遷移に落ち着く．
+%
+%
+%
+%
+%ある初期状態$\bx(0)$からはじめると，
+%% ある状態で静止するか，
+%$t=32$までには，かならず$\bx(0)$と同じ状態に戻ってきて，
+%周期的な遷移に落ち着く．
+%とくに，$ \bx(t+1)=\bx(t)$となる，
+% 状態更新をしても状態が変化しない周期1の状態のことを平衡状態とよぶ．
+1.で作成した回路において，
+$32$個，それぞれの状態から状態遷移をはじめた場合，
+どのような状態遷移をして静止するか，
+もしくは周期状態に落ち着くか，書き下して調べてみよ．
+値$-1$を$0$と置き換えれば
+個々の状態は$0,1,\cdots, 31 $の10進数で表現できるので，
+各状態は$0$から$31$の整数で表現できる．
+32通りの$\bx(0)$について，$\bx(1)$をコンピュータで計算しておけば，
+あとは，手で表に数字を書き込んでいくことができる（表2）．
+この回路には，各周期の状態遷移がいくつ存在するか，調べてみよ．
+
+
+\begin{table}[htb]
+\begin{center}
+\caption{状態遷移表．$\bx(0)$と同じ状態に戻ってきた後は書き込む必要はない}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \hline
+\backslashbox{$\bx(0)$}{$t$} &    &  0 & 1   & 2 & 3 & 4 & 5 & $\cdots$ & 31  \\ \hline\hline
+0 &  00000 & $\bx^0 \rightarrow$ & \makebox[10mm]  &  \makebox[10mm]
+ &  \makebox[10mm] &  \makebox[10mm] &  \makebox[10mm] & &  \\ \hline
+1 &  00001 & $\bx^1 \rightarrow$ & & & & & & & \\ \hline
+2 &  00010 & $\bx^2 \rightarrow$ & & & & & & & \\ \hline
+3 &  00011 & $\bx^3 \rightarrow$ & & & & & & &  \\ \hline
+& \vdots  &  \vdots  & & & & & & & \\ \hline
+31 & 11111 & $\bx^{31} \rightarrow$ & & & & & & & \hspace*{7mm}\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+%
+
+
+\noindent
+\underline{\gt 課題：コンピュータシミュレーション}
+
+\item 回路に記憶させておく$m$個のパターン $\bx^1,\bx^2,\cdots,\bx^m$ を
+乱数を使って確率的に生成しよう．
+以下の実験では特に指示がない限り，素子数 $ n=1000 $，記憶パターン数$m=80$とする．
+%乱数を使ってあらかじめ
+%$n$次元の記憶パターンを$m=80$個作っておく．
+%以下，これを$\bx^1,\bx^2,\cdots,\bx^m$ と記述する．
+まず，パターンどうしの類似度を調べておこう．
+具体的には，
+\begin{enumerate}
+\item $ \alpha = 1$
+\item 
+%$[0,1)$ の一様乱数を用い
+$\bx^\alpha$を作成．
+確率0.5で $ -1$，確率0.5で値 $1$ をとるように$ x_i^\alpha$ の値を決める
+（すべての素子 $ i=1,\cdots,n $について独立に乱数を生成）．
+\item $\alpha = \alpha +1$． (a)にもどり$m$回繰り返す． 
+\end{enumerate}
+%
+{\tt C}言語を利用する場合は
+データ構造として2次元配列~
+{\tt int x\_memory[$\alpha$][i]} を用意しておき，
+これに生成した$x_i^{\alpha}$ の値を格納しておけばよい．
+%
+パターン間の類似度を示す指標としては，以下の内積を使う．
+\begin{eqnarray}
+s(\bx^\alpha, \bx^\beta)  & = & 
+ \cos \theta = \frac{\bx^{\alpha }  
+\cdot \bx^\beta }{|\bx^\alpha||\bx^{\beta}|}
+=
+\frac{1}{n} \sum_{i=1}^n x_i^\alpha x_i^\beta
+\end{eqnarray}
+上記のように，$s$は方向余弦であるので$ -1 \leqq s \leqq 1 $ である．
+$\bx^{\alpha} = \bx^{\beta}$なら $s=1$である．
+生成した記憶パターン $\bx^1,\bx^2,\cdots,\bx^m$について，
+各記憶パターン対の類似度を求めよ．
+%これについて，
+全部で$ \frac{m(m-1)}{2}$ 個あるので，
+適当な bin 幅をとり，類似度のヒストグラムを描きなさい
+（ヒストグラムの作成には {\tt octave} 等を使えばよい）．
+
+
+%
+
+
+\item 回路の
+結合係数 $w_{ij}$の値を
+\begin{eqnarray}
+w_{ij} & = & \frac{1}{n} \sum_{\alpha=1}^m x_i^{\alpha} x_j^{\alpha}
+\end{eqnarray}
+と設定する（ 今は，$ \frac{1}{n}   $の意味は気にしなくてよい．
+これは $\bx^{1},\cdots,\bx^{m}$のパターンをHebb 学習したことに対応する）．
+まず，4. で生成した記憶パターン $\bx^1,\bx^2,\cdots,\bx^m$ を使い，
+コンピュータ上で，この回路を実現しなさい．
+
+次に，想起過程の実験をしよう．
+回路に与える初期値 $\bx(0)$ としては，
+記憶パターンそのままというよりは，
+記憶パターンの一つに近いパターンを使って実験したい．
+そこで
+記憶パターンの一つ（ここでは$\alpha = 1$番目とする）を取り出し，
+このうち，はじめの$a$個の値
+（$ \overbrace{x_1^1,\cdots,x_a^1}^a, x^1_{a+1},\cdots,x^1_n$）
+を反転させたものを初期値 $\bx(0)$とする．
+例えば $x^1_1 = 1$なら $x_1 (0) = -1$とする，
+引数として整数 $a$，$0 \leqq a \leqq n$ をとり，
+$\bx^1$と部分的に似たパターン
+$\bx(0)$を生成する関数を作っておけばよい．
+
+
+\begin{enumerate}
+\item $ a = 100 $ とする．
+\item 回路に $\bx(0)$を与え，
+20回ダイナミックスを繰り返す．
+横軸に$t$，
+縦軸に
+$ s(\bx^1,\bx(t))$ の値をプロットした図を描きなさい．
+ここで $\bx(t)$ は
+$t$回繰り返したあとの回路の状態である．
+\end{enumerate}
+
+
+
+\item 
+\begin{enumerate}
+\item $ a = 0 $ とする．
+\item 回路に $\bx(0)$を与え，
+20回ダイナミックスを繰り返す．
+横軸に$t$，
+縦軸に
+$ s(\bx^1,\bx(t))$ の値をプロットした図を描きなさい．
+
+\item $ a := a + 25 $．(b)に戻る．素子数が$n=1000$の場合，これを$25$回繰り返す．
+
+図は，25本の折れ線を重ねてプロットすること．
+
+\end{enumerate}
+
+
+\item 記憶パターン数 を $m = 200$ と変更し，
+6. と同じ実験をせよ．
+
+
+\item これまでの結果を踏まえ，連想記憶モデルの性質を考察しなさい．
+必要であれば，追加で実験をおこなうこと．
+
+
+※ このタイプの連想記憶モデルは
+記憶容量が $ m \approx 0.14n $ であることが
+知られている．
+
+
+**********
+
+
+\item 各素子の状態更新を非同期にしてみよ．
+状態更新の順序は常に一定でもよいし，でたらめな順に更新してもよい
+（どのような更新の仕方を採用したかレポートには記述すること）．
+同期更新の場合と，何か異なる性質が観測できるはずである．
+
+
+\item 「記憶のカタストロフィック崩壊」（人間の脳ではおこらない）
+\begin{enumerate}
+\item すべての結合係数の値を $0$ にする．
+\item $ \tau = 1 $．
+\item 記憶パターン $\bx^{\tau}$ を生成し，Hebb 学習をする．
+\begin{eqnarray}
+w_{ij}  & := & w_{ij} + x_i^{\tau} x_j^{\tau}
+\end{eqnarray}
+\item $\alpha$番目の記憶パターンを回路の初期状態として与え（$\alpha=1,\cdots,\tau$），
+回路を$20$回更新したあとの状態（もしくは平衡状態）との
+方向余弦（上記の類似度$s(\bx^i, \bx)$）が 0.9 以上であるかどうかを調べよ．
+これを，ここまでに記憶した$\tau$個の各パターンについて調べ，
+$\tau$個の記憶パターンのうち，いくつが回路にきちんと記憶されているか数えよ．
+これを $b(\tau)$個としよう．
+0.9 という値は勝手に設定した基準値であるので，
+より厳しい条件にしたければ 0.99 などとすればよい．
+
+\item $ \tau := \tau + 1 $．(c) に戻り，繰り返せ．
+$n=1000$の場合，$ 300 \sim 500$ 回程度繰り
+返せばよいだろう．
+横軸に $\tau$，縦軸に $b(\tau)$の値をとった折れ線の図を作成し，
+結果を考察せよ
+\end{enumerate}
+
+% 式（\ref{eqn:stable}）を用い，
+
+%\item 個別に相談しに来てください．
+%記憶パターンをスパースな場合などの課題を紹介します．
+%もしくは
+\item 自分で課題を作り，実験した結果を紹介せよ．
+
+\end{enumerate}
+
+
+\vskip 5mm
+
+
+レポートの最後には，感想，質問などを記述してほしい．
+できるだけ他人と違うコメントになることを意識して書くこと．
+理解しにくい点があった場合は，
+このプリント中の，
+\underline{どこの部分が分かりにくかったか具体的に}，
+指摘してもらえれば大変助かる（来年度向けに改善するため）．
+
+%
+%\vskip 5mm
+%本講義においては，
+%単位の認定にあたって，
+%問題設定，
+%計算機実験の手順，
+%計算機実験の結果を，
+%自分の書いたレポートを片手に，
+%ほぼ何もみないで説明できるレベルに到達できていることを要求します．
+%
+
+
+
+\end{document}
+

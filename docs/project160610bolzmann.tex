@@ -1,0 +1,495 @@
+%#! platex %f && dvipdfmxm -d 5 project160610bolzmann
+%
+\documentclass[a4paper,11pt]{jarticle} 
+\usepackage{fancybox}
+\usepackage{fancybox,ascmac}
+\usepackage{array}
+\usepackage[dvips,usenames]{color}  % for revise color 
+%\usepackage{fancyheadings}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{psfrag}
+\usepackage{ascmac} % itembox
+\usepackage{amsmath} % bmatrix
+\usepackage{amssymb} % leqq
+\usepackage{fancybox}
+\pagestyle{empty}
+\topmargin = -5mm
+\oddsidemargin = 4mm
+\textwidth = 150mm
+\textheight = 230mm
+\pagestyle{fancyplain}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt}
+\bmdefine{\bmu}{\mu}
+\bmdefine{\bm}{m}
+\bmdefine{\bx}{x}
+\bmdefine{\br}{r}
+\bmdefine{\bw}{w}
+\bmdefine{\by}{y}
+\bmdefine{\bz}{z}
+\bmdefine{\ba}{a}
+\bmdefine{\btheta}{\theta}
+\everymath{\displaystyle}
+\begin{document}
+\setlength{\baselineskip}{7mm}
+\rhead{\small 数理脳科学\\2016年6月10日}
+\lfoot{}
+%\cfoot{}
+
+\begin{center}
+{\large\bf 課題: ~ボルツマン機械}\\
+中間発表（30秒/人）：6月17日（金），提出締切 6月24日（金）
+\end{center}
+\vskip 3mm
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width=.7\linewidth]{model_bm201304v2.eps}
+\caption{ボルツマン機械\label{fig:model}}
+\end{center}
+\end{figure}
+\noindent
+【問題設定】~素子数 $ n = 3$ のボルツマン機械を考えよう．
+この機械の
+$j$番目の素子から$i$番目の素子への結合を $w_{ij}$．
+状態を $\bx =(x_1, x_2，x_3)$ ，
+$ x_i \in \{0,1 \}$ と書く．
+ここで，結合は対称であり（ $ w_{ij} = w_{ji}$ ），
+自己結合はないとする（ $ w_{ii}=0$）．
+各素子は非同期的に以下の確率にしたがい自分の状態を変えていく．
+\begin{eqnarray}
+\Pr \{x_i = 1 \} & = & \frac{1}{1 + \exp \{ - u_i/T \} }, \hspace*{5mm}
+\Pr \{x_i = 0 \} =  1 - \Pr \{x_i = 1 \} 
+\label{eqn:iterh}
+\\
+u_i & = & \sum_{j=1}^n w_{ij} x_j - h_i =  \sum_{j=0}^n w_{ij} x_j  
+\end{eqnarray}
+%
+%
+ここで，常に興奮している素子 $ x_0 = 1$ を仮想的に考え，
+しきい値を$ h_i = - w_{i0}$と表現し記述を簡潔にした．
+パラメータ$T$の値は，以下では特別な指示がなければ$T=1$とする．
+時間$t$における回路の状態を $ \bx(t)$と書こう．
+回路の状態は，$\bx(0) \rightarrow \bx(1) 
+\rightarrow \bx(2) \rightarrow
+\bx(3) \rightarrow \cdots $ と，
+マルコフ連鎖として状態遷移を続けていく．
+これは次の定常分布
+\begin{eqnarray}
+p(\bx; \bw) & = & c \exp \{ - E(\bx;\bw)/T \}  
+\label{eqn:stable}
+\end{eqnarray}
+をもつことが知られている．ここで
+\begin{eqnarray}
+E(\bx; \bw) & = & - \sum_{i<j} w_{ij} x_i x_j \\
+& = & - ( w_{01} x_1  + w_{02} x_2 + w_{03} x_3 
++ w_{12} x_1 x_2  + w_{13} x_1 x_3 + w_{23} x_2 x_3 )
+\end{eqnarray}
+であり，$c$は
+$ \displaystyle {\sum_{\bx} p(\bx;\bw) =  1}$
+とするための正規化定数
+\begin{eqnarray}
+c = c(\bw) & = & \frac{1}{ \displaystyle{  \sum_{\tilde{\bx}}} \exp \{ -
+ E( \tilde{\bx};\bw)/T \}} ,
+\end{eqnarray}
+$\bw$はパラメータ$\bw=(w_{01},\cdots,w_{23})$
+である．
+回路の性質は$\bw$で決まる．
+以下，素子数 $n=3$の場合を考える．
+コンピュータプログラムは，
+素子数が $n=4,5,\cdots$となる場合にも簡単に対応できるよう
+書ければよいが，無理はしなくてよい
+（$n=16$とか$n=32$の場合のシミュレーションが
+できればよいが，
+2進数と10進数を変換する関数を書く必要がある）．
+\vskip 2mm
+
+
+\noindent
+【基本課題】~
+\begin{enumerate}
+
+\item[問1] 初期状態として回路に適当な興奮状態を設定した場合，
+（\ref{eqn:iterh}）式にしたがい状態が変化していく．
+素子数$n=3$の場合，$2^3=8$個の状態（$\bx^0 \sim \bx^7 $，
+表\ref{table:stationary001}参照）をとりうる．
+それぞれの状態が（\ref{eqn:stable}）式の確率で出現するか，
+以下の(a),(b),(c) 3通りについて計算機実験で確認し，
+表1，表2，表3を完成させよ．
+
+\noindent
+具体的手順：
+\begin{enumerate}
+\item[1.] 回路の初期状態を $\bx (0) = (0,0,0)$ とする．$t=0$
+\item[2.] ランダムに一つの素子を選び，その状態を更新する．
+% \item[3.] その状態に何回遷移されたかの記録を更新
+\item[3.] $t:=t+1$．2にもどり，100万回繰り返す．
+%\item $\bx^0 \sim \bx^7 $の各状態が出現した回数を調べよ（表\ref{table:stationary001}参照）．
+\end{enumerate}
+
+\begin{enumerate}
+\item どの素子も互いに結合していないとする
+（$ w_{ij}=0, i,j=0,\cdots,3$）．
+この場合，式（\ref{eqn:stable}）の
+定常分布を計算すると，
+どの状態も確率 $ \frac{1}{8}$ で出現することがわかる．
+実際に計算機シミュレーションをおこない，出現頻度を確かめよ（表1）．
+%
+
+%
+%\begin{table}[htb]
+\begin{table}[p]
+\begin{center}
+\caption{機械の定常状態（結合なし）\label{table:stationary001}}
+\begin{tabular}{|r|c|c|c|} \hline
+& 状態 $\bx$  &   出現回数   & 出現頻度 \\ \hline
+$\bx^0$ & $(0,0,0) $  & & \\
+$\bx^1$ & $(0,0,1) $  & & \\
+$\bx^2$ & $(0,1,0) $  & & \\
+$\bx^3$ & $(0,1,1) $  & & \\
+$\bx^4$ & $(1,0,0) $  & & \\
+$\bx^5$ & $(1,0,1) $  & & \\
+$\bx^6$ & $(1,1,0) $  & & \\
+$\bx^7$ & $(1,1,1) $  & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+\rhead{}
+\item 結合係数 $\bw = \{ w_{ij} \}$の値を
+ランダムな値に設定し
+（たとえば [-5:5] の一様分布にしたがう乱数．ただし$w_{ii}=0,w_{ij}=w_{ji}$とする），
+式（\ref{eqn:stable}）の定常分布を計算し，
+各状態の出現確率を求めよ．
+また，実際に計算機シミュレーションをおこない，出現頻度を確かめよ（表2）．
+
+%\begin{table}[htb]
+\begin{table}[p]
+\begin{center}
+\caption{機械の定常状態（ランダム結合の場合）}
+\begin{tabular}{|r|c|c|c|c|}  \hline
+& 状態 $\bx$  &   理論値：$p(\bx;\bw)$   & 
+実験値：$p(\bx;\bw)$  & 実験値：$p(\bx;\bw)$  \\ 
+& & & $l=1,000$  & $l=1,000,000$ \\ \hline
+$\bx^0$ & $(0,0,0) $  & & & \\
+$\bx^1$ & $(0,0,1) $  & & &\\
+$\bx^2$ & $(0,1,0) $  & & &\\
+$\bx^3$ & $(0,1,1) $  & & &\\
+$\bx^4$ & $(1,0,0) $  & & &\\
+$\bx^5$ & $(1,0,1) $  & & &\\
+$ \bx^6$ & $(1,1,0) $  & & &\\
+$\bx^7$ & $(1,1,1) $  & & &\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\item 状態 $ \bx^3$ と状態 $\bx^6$ だけが出現するような
+回路を作ることはできるだろうか．
+相関型連想記憶で記憶パターンを埋め込んだように
+$ w_{ij} = \sum_{\bx^3,\bx^6} (2x_i -1) (2x_j-1) $ としてみよう．
+学習前の結合係数が $w_{ij}=0, i,j=0,\cdots,n$である場合，
+学習後の各係数の具体的な値を求めよ
+（$w_{ij}=w_{ji}$であるので，以下では $i<j$のみ記述を求めている）．
+$$ w_{01}= \hspace*{10mm},
+~ w_{02}= \hspace*{10mm},
+~ w_{03}= \hspace*{10mm}, 
+~ w_{12} =  \hspace*{10mm}, 
+~ w_{13}= \hspace*{10mm}, 
+~ w_{23} =  \hspace*{10mm}$$
+
+%\begin{table}[htb]
+\begin{table}[p]
+\begin{center}
+\caption{機械の定常状態（連想記憶もどき）}
+\begin{tabular}{|r|c|c|c|c|}  \hline
+& 状態 $\bx$  &   理論値：$p(\bx)$   & 
+実験値：$p(\bx)$  & 実験値：$p(\bx)$  \\ 
+& & & $l=1,000$  & $l=1,000,000$ \\ \hline
+$\bx^0$ & $(0,0,0) $  & & & \\
+$\bx^1$ & $(0,0,1) $  & & &\\
+$\bx^2$ & $(0,1,0) $  & & &\\
+$\rightarrow \bx^3$ & $(0,1,1) $  & & &\\
+$\bx^4$ & $(1,0,0) $  & & &\\
+$\bx^5$ & $(1,0,1) $  & & &\\
+$\rightarrow \bx^6$ & $(1,1,0) $  & & &\\
+$\bx^7$ & $(1,1,1) $  & & &\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+この $\{w_{ij}\}$と式（\ref{eqn:stable}）を用い，
+定常分布における各状態の$p(\bx)$（理論値．ボルツマン分布）を計算せよ．
+また，
+コンピュータシミュレーションをおこない，
+各状態が実際に出現した頻度を計算し，それを理論値と比較せよ
+（表3．繰り返し回数$l$を1万，100万などと変えて，少なくとも2通りは試すこと）．
+
+
+\end{enumerate}
+
+\noindent
+【ボルツマン機械の学習】
+\item[問2] 各状態$\bx$ が次の表\ref{table:learning001}に示す頻度で
+出現するボルツマン機械を，学習により実現しよう．
+%\begin{table}[p]
+\begin{table}[htb]
+\begin{center}
+\caption{ボルツマン機械の学習\label{table:learning001}．
+信号$\bx$の出現頻度．
+}
+\begin{tabular}{|c|c|c|c|} \hline
+& 状態 $\bx$  &   外界： $q(\bx)$ & 確率 $p(\bx) $\\ \hline
+$\bx^0$ & $(0,0,0) $  & 0.1  &  \\
+$\bx^1$ & $(0,0,1) $  & 0.1 &   \\
+$\bx^2$ & $(0,1,0) $  & 0.05 & \\
+$\bx^3$ & $(0,1,1) $  & 0.05 & \\
+$\bx^4$ & $(1,0,0) $  & 0.1  & \\
+$\bx^5$ & $(1,0,1) $  & 0.1 & \\
+$\bx^6$ & $(1,1,0) $  & 0.4& \\
+$\bx^7$ & $(1,1,1) $  & 0.1 & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\noindent
+具体的な手順：
+\begin{enumerate}
+\item すべての結合係数を $ w_{ij} = 0 $ とする（乱数でもよい）．
+\item 表\ref{table:learning001}に示す確率分布 $q(\bx)$にしたがい
+$\bx$ を100個生成する．
+$x_i$ と $x_j$ が同時に $1$ をとる頻度を $f_{ij}$ とせよ．
+（こんな実験をするのは時間の無駄だと思えば，期待値 $\sum_\alpha x_i x_j p(\bx^\alpha)$を計算すればよい．
+⇒ $ f_{01} = 0.7, f_{02} = 0.6, f_{03} = 0.35, f_{12}=0.5,f_{13}=0.2,
+      f_{23}=  0.15$．
+ここで，
+$x_0$は常に1であること（$x_0=1$），
+$\bx$として，$\bx=(x_1,x_2,x_3)$と，
+$x_0$をのぞいて表記していることに注意．
+ただし信号の次元$n$が大きくなると，
+$2^n$とおりの状態数を考慮する必要があり，
+こういう計算はできない．
+その場合は，実際に信号を生成して統計量を計算するしかない）．
+
+\item 回路の初期状態を $\bx (0) = (0,0,0)$に設定する．
+
+\item ランダムに一つの素子を選び，その素子の状態を更新する．
+これを100回繰り返し，素子 $x_i$ と $x_j$ が
+同時に $1$ になった頻度を $g_{ij}$ とする（頻度$g_{ij}$は同時に$1$に
+なった回数を$100$で割ったもの． $ 0 \leqq g_{ij} \leqq 1$）．
+% 以下では，これをもとに$p(\bx)$を推定する．
+
+\item 結合係数の値を更新する（学習）：
+\begin{eqnarray}
+w_{ij} & := & w_{ij} + 0.01 ( f_{ij} - g_{ij} ) 
+\end{eqnarray}
+\item 
+Kullback-Leibler のダイバージェンス
+\begin{eqnarray}
+D & = & \sum_{\bx} p(\bx) \log \frac{p(\bx)}{q(\bx)} 
+\end{eqnarray}
+を計算する．
+ここで$p(\bx)$は，
+実際に回路を自由に走らせて計算してもよいが，
+素子数$n$が小さい場合は，回路のパラメータ$\{w_{ij}\}$から計算できる理論値
+（式（\ref{eqn:stable}））を用いればよい．
+
+\item (d) にもどり繰り返す（繰り返し回数は任意．例えば 10000回）．
+
+\item 横軸に学習回数$t$，縦軸にKullback-Leibler のダイバージェンス
+をプロットした図を描き（曲線が描ける），
+学習が進むにしたがい $p(\bx)$が$q(\bx)$に近づいていく
+（$D=0$に近づく）様子を確認せよ
+
+
+
+\item 獲得した $w_{ij}$ の値を列挙せよ．
+$$ w_{01}= \hspace*{10mm},
+~ w_{02}= \hspace*{10mm},
+~ w_{03}= \hspace*{10mm}, 
+~ w_{12} =  \hspace*{10mm}, 
+~ w_{13}= \hspace*{10mm}, 
+~ w_{23} =  \hspace*{10mm}$$
+
+
+
+\item しきい値がない$n=3$の回路を考えよう（$w_{01}=w_{02}=w_{03}=0 $）．
+このとき同様な実験をおこない（もう一度(c)から実験をする），
+結果を比較し考察せよ（2本の曲線の位置関係を比較せよ）．
+
+\end{enumerate}
+
+
+
+\item[問3] しきい値ありの学習済みの回路において$1$番目の素子の値を
+$x_1 = 1$ と固定し，$x_2,x_3$だけ値の更新を許すとしよう．
+このとき，
+条件付き確率を直接学習したわけではないが，
+条件付き確率が学習されていることを確かめよ．
+
+
+%\begin{table}[p]
+\begin{table}[htb]
+\begin{center}
+\caption{条件付き確率の獲得\label{table:learning002}．
+学習後，
+$x_1 = 1$ と固定し$x_2,x_3$だけ値を更新し
+（更新回数は1万回），
+回路の状態を自由に動かし，各状態が出現する頻度 $p(\bx|x_1=1) $を調べよ．
+}
+\vskip 2mm
+
+\begin{tabular}{|c|c|c|c|c|} \hline
+& 状態 $\bx$  &   外界：同時分布$q(\bx)$ & 外界：周辺分布$q(\bx|x_1=1)$ & $p(\bx|x_1=1) $\\ \hline
+$\bx^0$ & $(0,0,0) $  & 0.1  & 0 & 0.0  \\
+$\bx^1$ & $(0,0,1) $  & 0.1  & 0 & 0.0 \\
+$\bx^2$ & $(0,1,0) $  & 0.05 & 0 & 0.0 \\
+$\bx^3$ & $(0,1,1) $  & 0.05 & 0 & 0.0 \\
+$\bx^4$ & $(1,0,0) $  & 0.1  & 0.142 &  \\
+$\bx^5$ & $(1,0,1) $  & 0.1 &  0.142&  \\
+$\bx^6$ & $(1,1,0) $  & 0.4 & 0.571 &  \\
+$\bx^7$ & $(1,1,1) $  & 0.1 & 0.142 & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\newpage
+
+\item[問4] 問1(c)では，
+状態$\bx^3$と状態$\bx^6$だけがそれぞれ確率0.5で出現するような
+機械を設計することに失敗したはずである．
+もう一度，問2の学習則を使い，$q(\bx^3)=q(\bx^6)=0.5$として，
+機械を学習させてみよう．
+獲得した $w_{ij}$ の値を列挙し，表6を完成せよ．
+$$ w_{01}= \hspace*{10mm},
+~ w_{02}= \hspace*{10mm},
+~ w_{03}= \hspace*{10mm}, 
+~ w_{12} =  \hspace*{10mm}, 
+~ w_{13}= \hspace*{10mm}, 
+~ w_{23} =  \hspace*{10mm}$$
+
+
+%\begin{table}[p]
+\begin{table}[htb]
+\begin{center}
+\caption{問4．機械の定常状態．学習後．}
+\begin{tabular}{|r|c|c|c|c|}  \hline
+& 状態 $\bx$  &   外界の信号：確率：$q(\bx)$   & 
+実験値：$p(\bx)$  & 実験値：$p(\bx)$  \\ 
+& & & $l=1,000$  & $l=1,000,000$ \\ \hline
+$\bx^0$ & $(0,0,0) $  & 0.0 & & \\
+$\bx^1$ & $(0,0,1) $  & 0.0 & &  \\
+$\bx^2$ & $(0,1,0) $  & 0.0 & & \\
+$\rightarrow \bx^3$ & $(0,1,1) $  & 0.5 & &  \\
+$\bx^4$ & $(1,0,0) $  & 0.0 & & \\
+$\bx^5$ & $(1,0,1) $  & 0.0 & &  \\
+$\rightarrow \bx^6$ & $(1,1,0) $  & 0.5 & & \\
+$\bx^7$ & $(1,1,1) $  & 0.0 & & \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\vskip 2mm
+
+**********
+
+\vskip 2mm
+
+
+\item[問5] （オプション課題）
+$n=8,16,32,64$で，同様な実験をしてみよ．
+$n=8$の場合，$\bx$の総数は$2^8=256$とおりある．
+このひとつひとつについて出現確率が計算できる．
+一方，学習させたい確率分布を指定するには，$\sum_\bx p(\bx)=1$より，
+表4のようにして，256個の数字を与える必要がある．
+これは大変であるので，
+たとえば次のような，マルコフ情報源を考えるとよい．
+$\bx = (x_1,x_2,\cdots,x_8)$, 
+$ x_i \in \{ 0, 1 \}$,
+$ i=1,\cdots,8$ として，確率分布
+$p(\bx)= p(x_0) p(x_1|x_0) p(x_2|x_1)\cdots p(x_8|x_7)$
+が以下のように与えられているとする．
+%
+%
+\begin{eqnarray}
+p(x_1) = 
+\mathrm{Prob} (X_1 = x_1)
+%\Pr (X_1 = x_1)
+& = & \left\{ \begin{array}{ll}
+0.5 &  \mathrm{if}~\hspace*{1em} x_1 = 0  \\
+0.5 &  \mathrm{if}~\hspace*{1em} x_1 = 1 
+\end{array}
+\right.
+% \label{eqn:neuron_dynamics}
+\\
+p(x_{i+1} | x_i) 
+& = & \left\{ \begin{array}{ll}
+\theta &  \mathrm{if}~\hspace*{1em} x_i = 0, x_{i+1}=0   \\
+1-\theta &  \mathrm{if}~\hspace*{1em} x_i = 0, x_{i+1}=1   \\
+\theta &  \mathrm{if}~\hspace*{1em} x_i = 1, x_{i+1}=1   \\
+1-\theta &  \mathrm{if}~\hspace*{1em} x_i = 1, x_{i+1}=0 
+\end{array}
+\right.
+\end{eqnarray}
+$\theta = 0.9$ などと指定する．
+このように，
+2個のパラメータの値（$ 0.5, \theta$）を指定するだけで，
+$256$個もある状態のそれぞれに，出現確率を指定できる．
+
+\item[問6] （オプション課題）
+$n=100$で実験する場合，
+とりうる可能性のある状態$\bx$は，
+$2^{100} = (2^{10)^{10}}\approx (10^3)^{10}= 10^{30}$通り
+あり，
+それぞれの状態の出現頻度を求めることは，
+もはや現実的には不可能である．
+各素子が $x_i \in \{0,1\} $ の2値をとる場合でさえも，
+次元数が100になると，各状態$\bx$に
+ついて個別に確率$p(\bx)$を設計していく方法は，
+場合の数が多すぎて採用できない．
+しかし，音声でも画像でも，
+256次元ベクトル程度の信号をモデル化することは
+よくおこなわれている．
+このような高次元データの確率分布を設計する方法について調べてみよ．
+
+\item[問7] （オプション課題）
+連想記憶モデルの記憶パターンの学習（${w_{ij}}$を設定する部分）に，
+このボルツマン機械を使用してみるとよい．
+想起のアルゴリズムは，課題1のままで，決定論的に動かせばよい．
+相関型連想記憶モデルの記憶容量は約$0.14n$に対し，
+記憶容量は $2n$を超えるという予想もある．
+できるだけ大きい$n$で，この予想の真偽を確かめよ．
+
+
+
+
+\end{enumerate}
+\vskip 10mm
+
+
+（コメント） 一般に，素子数を $n$とすると，
+回路のパラメータ数は $\frac{n(n+1)}{2}$ であり，
+とりうる状態の総数は $2^n$ である．
+このレポート課題の$n=3$の場合は，偶然？，任意の与えられた確率分布をよく近似できる．
+これはパラメータ数が $\frac{n(n+1)}{2} = 6$の回路であり，
+状態数 $2^n = 8$ （確率は足して1になるので，自由度は7）
+であったからである．
+$n=10$の場合，
+パラメータの総数は $\frac{n(n+1)}{2} = 55$と増えるが，
+状態数は素子数の指数のオーダーで  $2^n = 1024$に増えてしまう．
+
+
+\vskip 5mm
+
+
+レポートの最後には，感想，質問などを記述してほしい．
+理解しにくい点があった場合は，
+このプリント中の，
+\underline{どこの部分が分かりにくかったか具体的に}，
+指摘してもらえれば助かります（来年度向けに改善するため）．
+
+\end{document}
+
+
