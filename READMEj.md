@@ -1,10 +1,13 @@
-# mathematical_neuroscience
-Mathematical Neuroscience Course Materials
+ï»¿# mathematical_neuroscience
+Mathematical Neuroscience Course Materials [English](README.md)
+
 
     git clone "https://github.com/date333cs/mathematical_neuroscience"
 
 
 ### Associative Memory
+
+- [èª²é¡Œ1](./docs/project160415associative.pdf)
 
 - Purpose: reproduce Fig.1 and Fig.2 of Amari & Maginu (1988).
 
@@ -17,22 +20,27 @@ Mathematical Neuroscience Course Materials
  - double w[i][j] : connection weights
  - int p[a][i] : memory items
 
-### ¼«¸ÊÁÈ¿¥²½¥â¥Ç¥ë¡§ Kohonen ¤Î¼«¸ÊÁÈ¿¥²½¥Ş¥Ã¥×¡ÊSelf-organizaing MAP¡Ë
+### è‡ªå·±çµ„ç¹”åŒ–ãƒ¢ãƒ‡ãƒ«ï¼š Kohonen ã®è‡ªå·±çµ„ç¹”åŒ–ãƒãƒƒãƒ—ï¼ˆSelf-organizaing MAPï¼‰
 
-- Çº¤Ş¤·¤¤ÁªÂò¡¥Î¾Êı¤Ä¤¯¤ë¡©
+- [èª²é¡Œ2](./docs/project160513neural_som.pdf)
 
- - ¤È¤ê¤¢¤¨¤ºÆ°ºî¸¶Íı¤ò³Î¤«¤á¤ë¤À¤±¤Î¥â¥Ç¥ë¤ò¤Ä¤¯¤ë¤«¡¥¢ª ÆşÎÏ2¼¡¸µ¡¤¿À·Ğ¾ì1¼¡¸µ¡Ê¤â¤·¤¯¤Ï2¼¡¸µ¡Ë¡¤
-  - ¥Ç¡¼¥¿¹½Â¤¡§x[a],m[i][a], a=0,1, i=0,1,...,n-1 ¡Ên ¤ÏÁÇ»Ò¿ô¡Ë
+- æ‚©ã¾ã—ã„é¸æŠï¼ä¸¡æ–¹ã¤ãã‚‹ï¼Ÿ
 
- - ¤¢¤È¤ÇÍøÍÑ¤·¤ä¤¹¤¤¤â¤Î¤ò¤Ä¤¯¤ë¤«¡¥¤³¤Î¾ì¹ç¡¤¾¯¤·¼ê´Ö¤¬¤«¤«¤ë¡¥
+ - ã¨ã‚Šã‚ãˆãšå‹•ä½œåŸç†ã‚’ç¢ºã‹ã‚ã‚‹ã ã‘ã®ãƒ¢ãƒ‡ãƒ«ã‚’ã¤ãã‚‹ã‹ï¼â†’ å…¥åŠ›2æ¬¡å…ƒï¼Œç¥çµŒå ´1æ¬¡å…ƒï¼ˆã‚‚ã—ãã¯2æ¬¡å…ƒï¼‰ï¼Œ
+  - ãƒ‡ãƒ¼ã‚¿æ§‹é€ ï¼šx[a],m[i][a], a=0,1, i=0,1,...,n-1 ï¼ˆn ã¯ç´ å­æ•°ï¼‰
 
- - ½é¿´¼Ô¤Ë¤È¤Ã¤Æ¡¤Íı²ò¤·¤ä¤¹¤¤¤Î¤Ï¡©
+ - ã‚ã¨ã§åˆ©ç”¨ã—ã‚„ã™ã„ã‚‚ã®ã‚’ã¤ãã‚‹ã‹ï¼ã“ã®å ´åˆï¼Œå°‘ã—æ‰‹é–“ãŒã‹ã‹ã‚‹ï¼
+
+ - åˆå¿ƒè€…ã«ã¨ã£ã¦ï¼Œç†è§£ã—ã‚„ã™ã„ã®ã¯ï¼Ÿ
 
 - templates: [mn_som000.c](mn_som000.c), [mn_som001.c](mn_som001.c),
  - for MNIST [templates](http://www.cs.miyazaki-u.ac.jp/~date/lectures/2015neural/mnist/index.html)
 
 
 ### Boltzmann Machine
+
+- [èª²é¡Œ3](./docs/project160610bolzmann.pdf)
+
 +
 
 
