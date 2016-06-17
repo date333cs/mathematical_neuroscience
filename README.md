@@ -1,5 +1,5 @@
-# mathematical_neuroscience
-Mathematical Neuroscience Course Materials [ÆüËÜ¸ì](READMEj.md)
+ï»¿# mathematical_neuroscience
+Mathematical Neuroscience Course Materials [æ—¥æœ¬èªž](READMEj.md)
 
     git clone "https://github.com/date333cs/mathematical_neuroscience"
 
