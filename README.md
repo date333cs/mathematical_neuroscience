@@ -21,9 +21,10 @@ Mathematical Neuroscience Course Materials [日本語](READMEj.md)
 
 ### Self-organizaing MAP
 
-- [projects](./docs/project160513neural_som.pdf)
 
 <img src="https://github.com/date333cs/mathematical_neuroscience/blob/master/result_som_102.png" height="220px" align="left">
+
+- [projects](./docs/project160513neural_som.pdf)
 
 - Input: 2D uniform distribution, Neural Field (Output): 1D (n=100)
 

@@ -22,6 +22,9 @@ Mathematical Neuroscience Course Materials [English](README.md)
 
 ### 自己組織化モデル： Kohonen の自己組織化マップ（Self-organizaing MAP）
 
+
+<img src="https://github.com/date333cs/mathematical_neuroscience/blob/master/result_som_102.png" height="220px" align="left">
+
 - [課題2](./docs/project160513neural_som.pdf)
 
 - 悩ましい選択．両方つくる？
