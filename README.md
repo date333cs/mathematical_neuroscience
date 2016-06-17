@@ -1,12 +1,12 @@
 # mathematical_neuroscience
-Mathematical Neuroscience Course Materials [READMEj.md](日本語)
+Mathematical Neuroscience Course Materials [日本語](READMEj.md)
 
     git clone "https://github.com/date333cs/mathematical_neuroscience"
 
 
 ### Associative Memory
 
-- [project160415associative.pdf](projects)
+- [projects](project160415associative.pdf)
 
 - Purpose: reproduce Fig.1 and Fig.2 of Amari & Maginu (1988).
 
@@ -21,7 +21,7 @@ Mathematical Neuroscience Course Materials [READMEj.md](日本語)
 
 ### Self-organizaing MAP
 
-- [project160513neural_som.pdf](projects)
+- [projects](project160513neural_som.pdf)
 
 <img src="https://github.com/date333cs/mathematical_neuroscience/blob/master/result_som_102.png" height="220px" align="left">
 
@@ -36,7 +36,7 @@ Mathematical Neuroscience Course Materials [READMEj.md](日本語)
 
 ### Boltzmann Machine
 
-- [project160610bolzmann.pdf](projects)
+- [projects](project160610bolzmann.pdf)
 
 +
 
