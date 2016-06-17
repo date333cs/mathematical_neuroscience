@@ -1,5 +1,5 @@
 ﻿# mathematical_neuroscience
-Mathematical Neuroscience Course Materials [日本語](READMEj.md)
+Mathematical Neuroscience Course Materials ([日本語](READMEj.md))
 
     git clone "https://github.com/date333cs/mathematical_neuroscience"
 
@@ -38,6 +38,14 @@ Mathematical Neuroscience Course Materials [日本語](READMEj.md)
 ### Boltzmann Machine
 
 - [projects](./docs/project160610bolzmann.pdf)
+
+
+- templates: [mn_bm001.c](mn_bm001.c), [mn_bm002.c](mn_bm002.c), [mn_bm003.c](mn_bm003.c), 
+
+- data structure (n neurons)
+ - int x[i] :  current state
+ - double w[i][j] : connection weights
+ - int s[a]: (a counter) for computing how many times each state appear 
 
 +
 

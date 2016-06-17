@@ -240,7 +240,7 @@ $\bx^7$ & $(1,1,1) $  & & &\\ \hline
 信号$\bx$の出現頻度．
 }
 \begin{tabular}{|c|c|c|c|} \hline
-& 状態 $\bx$  &   外界（真の分布）： $q(\bx)$ & 機械が実現する分布 $p(\bx; \{w_{ij}\}) $\\ \hline
+& 状態 $\bx$  &   外界： $q(\bx)$ & 確率 $p(\bx) $\\ \hline
 $\bx^0$ & $(0,0,0) $  & 0.1  &  \\
 $\bx^1$ & $(0,0,1) $  & 0.1 &   \\
 $\bx^2$ & $(0,1,0) $  & 0.05 & \\
@@ -287,7 +287,7 @@ w_{ij} & := & w_{ij} + 0.01 ( f_{ij} - g_{ij} )
 \item 
 Kullback-Leibler のダイバージェンス
 \begin{eqnarray}
-D & = & \sum_{\bx} q(\bx) \log \frac{q(\bx)}{p(\bx)} 
+D & = & \sum_{\bx} p(\bx) \log \frac{p(\bx)}{q(\bx)} 
 \end{eqnarray}
 を計算する．
 ここで$p(\bx)$は，
