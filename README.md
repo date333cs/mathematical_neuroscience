@@ -47,6 +47,11 @@ Mathematical Neuroscience Course Materials ([日本語](READMEj.md))
  - double w[i][j] : connection weights
  - int s[a]: (a counter) for computing how many times each state appear 
 
+
+### Stochastic gradient of piecewise linear discriminant functions, Amari (1967) 
+
+- Purpose: reproduce Fig.5-1 (p.120) of Amari (1967).
+
 +
 
 
